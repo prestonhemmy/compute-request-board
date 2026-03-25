@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_25_154909) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_25_203938) do
   create_table "compute_requests", force: :cascade do |t|
-    t.integer "cpu_count"
+    t.integer "cpu_cores"
     t.datetime "created_at", null: false
     t.integer "gpu_count"
     t.integer "hours"
@@ -23,5 +23,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_154909) do
     t.string "status"
     t.string "title"
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_compute_requests_on_user_id"
   end
+
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "lab"
+    t.string "name"
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "compute_requests", "users"
 end
