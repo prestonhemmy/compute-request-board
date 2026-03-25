@@ -1,0 +1,2 @@
+class ComputeRequest < ApplicationRecord
+end
