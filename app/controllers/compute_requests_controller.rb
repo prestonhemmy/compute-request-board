@@ -65,6 +65,6 @@ class ComputeRequestsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def compute_request_params
-      params.expect(compute_request: [ :title, :gpu_count, :cpu_count, :memory_gb, :hours, :partition, :priority, :status, :notes, :created_at, :updated_at ])
+      params.expect(compute_request: [ :title, :user_id, :gpu_count, :cpu_cores, :memory_gb, :hours, :partition, :priority, :status, :notes, :created_at, :updated_at ])
     end
 end
