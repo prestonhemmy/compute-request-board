@@ -5,6 +5,7 @@ class ComputeRequestsController < ApplicationController
   def index
     @compute_requests = ComputeRequest.all
 
+    # filtering
     if params[:priority].present?
       @compute_requests = @compute_requests.by_priority(params[:priority])
     end
@@ -12,6 +13,12 @@ class ComputeRequestsController < ApplicationController
     if params[:lab].present?
       @compute_requests = @compute_requests.by_user_lab(params[:lab])
     end
+
+    # metrics
+    @total_requests = @compute_requests.size
+    @gpu_count = @compute_requests.gpus_allocated
+    @pending_cpu_hours = @compute_requests.pending_cpu_hours
+    @urgent_count = @compute_requests.urgent_count
 
     @grouped_requests = @compute_requests.group_by(&:status)
   end

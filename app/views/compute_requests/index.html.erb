@@ -9,13 +9,10 @@
   <div class="flex justify-between items-center mb-6">
     <h1 class="font-bold text-4xl">Compute Request Board</h1>
     <%= link_to "New compute request", new_compute_request_path,
-                class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+                class: "rounded-md px-3.5 py-2.5 bg-slate-600 hover:bg-slate-500 text-white block font-medium" %>
   </div>
 
-  <%# Filter Bar (Milestone 5, Step 5) %>
-  <%# TODO: Add filter dropdowns for priority and lab as a GET form %>
-  <%# These submit back to the index action with query params like ?priority=high&lab=Genomics %>
-  <%# The controller reads these params and filters @compute_requests accordingly %>
+  <%# Filter Bar %>
   <div class="mb-6">
     <%= form_with url: compute_requests_path, method: :get do |form| %>
 
@@ -40,7 +37,7 @@
       </div>
 
       <%= submit_tag "Filter",
-                     class: "rounded-md px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium cursor-pointer" %>
+                     class: "rounded-md px-3.5 py-2 bg-slate-600 hover:bg-slate-500 text-white text-sm font-medium cursor-pointer" %>
 
       <% if params[:priority].present? || params[:lab].present? %>
         <%= link_to "Clear", compute_requests_path,
@@ -51,7 +48,8 @@
   </div>
 
   <%# Dashboard %>
-  <%# TODO: Render _dashboard.html.erb partial here %>
+  <%= render "dashboard", total_requests: @total_requests, gpu_count: @gpu_count,
+             pending_cpu_hours: @pending_cpu_hours, urgent_count: @urgent_count %>
 
   <%# Kanban Board %>
   <div class="flex gap-4 overflow-x-auto">
