@@ -1,29 +1,67 @@
-<% content_for :title, "Compute requests" %>
+<% content_for :title, "Compute Request Board" %>
 
 <div class="w-full">
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
 
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Compute requests</h1>
-    <%= link_to "New compute request", new_compute_request_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  <%# Header %>
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="font-bold text-4xl">Compute Request Board</h1>
+    <%= link_to "New compute request", new_compute_request_path,
+                class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
   </div>
 
-  <div id="compute_requests" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @compute_requests.any? %>
-      <% @compute_requests.each do |compute_request| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render compute_request %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", compute_request, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_compute_request_path(compute_request), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", compute_request, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
-          </div>
-        </div>
+  <%# Filter Bar (Milestone 5, Step 5) %>
+  <%# TODO: Add filter dropdowns for priority and lab as a GET form %>
+  <%# These submit back to the index action with query params like ?priority=high&lab=Genomics %>
+  <%# The controller reads these params and filters @compute_requests accordingly %>
+  <div class="mb-6">
+    <%= form_with url: compute_requests_path, method: :get do |form| %>
+
+      <div class="flex flex-col py-1">
+        <%= label_tag :priority, "Priority", class: "text-sm font-medium text-gray-700 mb-1" %>
+        <%= select_tag :priority,
+                       options_for_select(
+                         [["All", ""]] + ComputeRequest.priorities.keys.map { |p| [p.capitalize, p] },
+                         params[:priority]
+                       ),
+                       class: "rounded-md border border-gray-400 px-3 py-2 text-sm" %>
+      </div>
+
+      <div class="flex flex-col py-1">
+        <%= label_tag :lab, "Lab", class: "text-sm font-medium text-gray-700 mb-1" %>
+        <%= select_tag :lab,
+                       options_for_select(
+                         [["All", ""]] + User.distinct.pluck(:lab).compact.map { |l| [l, l] },
+                         params[:lab]
+                       ),
+                       class: "rounded-md border border-gray-400 px-3 py-2 text-sm" %>
+      </div>
+
+      <%= submit_tag "Filter",
+                     class: "rounded-md px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium cursor-pointer" %>
+
+      <% if params[:priority].present? || params[:lab].present? %>
+        <%= link_to "Clear", compute_requests_path,
+                    class: "rounded-md px-3.5 py-2 bg-gray-200 hover:bg-gray-100 text-sm font-medium" %>
       <% end %>
-    <% else %>
-      <p class="text-center my-10">No compute requests found.</p>
+
     <% end %>
   </div>
+
+  <%# Dashboard %>
+  <%# TODO: Render _dashboard.html.erb partial here %>
+
+  <%# Kanban Board %>
+  <div class="flex gap-4 overflow-x-auto">
+    <% ComputeRequest.statuses.keys.each do |status| %>
+      <%# fetch requests for this status from the controller's grouped data %>
+      <% requests = @grouped_requests[status] || [] %>
+
+      <%# Column header — status name and count %>
+      <%= render "status_column", status: status, requests: requests %>
+    <% end %>
+  </div>
+
 </div>
