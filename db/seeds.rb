@@ -20,7 +20,7 @@ userQM = User.find_or_create_by!(
 userCV = User.find_or_create_by!(
   name: "James Okafor",
   email: "jokafor@ufl.edu",
-  lab: "Image Processing and Computer Vision"
+  lab: "EEL4930 — Image Processing and Computer Vision"
 )
 
 # NLP Requests

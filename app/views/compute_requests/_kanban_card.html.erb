@@ -1,0 +1,38 @@
+<%# Locals variables: compute_request (a single ComputeRequest) %>
+
+<%= link_to compute_request_path(compute_request),
+            class: "block rounded-md p-3 bg-white shadow-sm space-y-2 hover:shadow-md hover:bg-gray-50 transition-all focus:outline-blue-500" do %>
+
+  <%# Card Header %>
+  <div class="font-medium text-sm">
+    <%= compute_request.title %>
+  </div>
+  <div class="text-xs text-gray-500">
+    <%= compute_request.user&.name %>
+  </div>
+
+  <%# Resource Badges %>
+  <div class="flex flex-wrap gap-1">
+    <span class="bg-sky-200 text-gray-500 text-xs px-1.5 py-0.5 rounded-full">
+      <%= compute_request.gpu_count %> GPU
+    </span>
+    <span class="bg-blue-200 text-gray-500 text-xs px-1.5 py-0.5 rounded-full">
+      <%= compute_request.cpu_cores %> CPU
+    </span>
+    <span class="bg-indigo-200 text-gray-500 text-xs px-1.5 py-0.5 rounded-full">
+      <%= compute_request.memory_gb %> GB
+    </span>
+    <span class="bg-blue-300 text-gray-500 text-xs px-1.5 py-0.5 rounded-full">
+      <%= compute_request.hours %> hrs
+    </span>
+  </div>
+
+  <%# Card Footer %>
+  <div class="flex justify-between items-center">
+    <%= priority_badge(compute_request.priority) %>
+    <span class="text-xs text-gray-400">
+      <%= time_ago_in_words(compute_request.created_at) %> ago
+    </span>
+  </div>
+
+<% end %>

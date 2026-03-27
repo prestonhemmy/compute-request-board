@@ -27,6 +27,11 @@ class ComputeRequest < ApplicationRecord
     burst: "burst"
   }, default: "default"
 
+  # Scopes
+
+  scope :by_priority, ->(p) { where(priority: p) }
+  scope :by_user_lab, ->(l) { joins(:user).where(users: { lab: l }) }
+
   # Validations
 
   validates :title, presence: true
