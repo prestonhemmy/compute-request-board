@@ -58,10 +58,10 @@ completed/rejected), notes. Belongs to a User.
 ## Screenshots
 
 <div align="center">
-    <div><img src="screenshots/landing-page.png" width="900" alt="Kanban board"></div>
-    <div><img src="screenshots/filtered-results.png" width="900" alt="Kanban board with filters applied"></div>
-    <div><img src="screenshots/show-request.png" width="900" alt="Request details page"></div>
-    <div><img src="screenshots/edit-request.png" width="900" alt="Edit request page"></div>
+    <div><img src="screenshots/landing-page.png" width="800" alt="Kanban board"></div>
+    <div><img src="screenshots/filtered-results.png" width="800" alt="Kanban board with filters applied"></div>
+    <div><img src="screenshots/show-request.png" width="800" alt="Request details page"></div>
+    <div><img src="screenshots/edit-request.png" width="800" alt="Edit request page"></div>
 </div>
 
 
