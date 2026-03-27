@@ -1,6 +1,7 @@
 module ComputeRequestsHelper
   def field_classes(record, field)
-    base = "shadow-sm rounded-md border px-3 py-2 w-3/4"
+    base = "flex-1 shadow-sm rounded-md border px-3 py-2"
+
     if record.errors[field].any?
       "#{base} border-red-400 focus:outline-red-600"
     else
@@ -17,7 +18,7 @@ module ComputeRequestsHelper
     when :high
       priority_classes = 'bg-orange-600'
     else
-      priority_classes = 'bg-red-700'   # :urgent
+      priority_classes = 'bg-red-600'   # :urgent
     end
 
     common_classes = "px-2 py-1 rounded-md text-sm text-white font-medium"
@@ -36,7 +37,7 @@ module ComputeRequestsHelper
     when :completed
       badge_classes = 'bg-blue-400 text-blue-800'
     else
-      badge_classes = 'bg-red-700 text-white'   # :rejected
+      badge_classes = 'bg-red-600 text-white'   # :rejected
     end
 
     common_classes = "px-2 py-1 rounded-full text-sm font-medium"
@@ -55,7 +56,7 @@ module ComputeRequestsHelper
     when :completed
       status_class = "bg-blue-400"
     else
-      status_class = "bg-red-700"     # :rejected
+      status_class = "bg-red-600"     # :rejected
     end
 
     common_classes = "block w-4 h-4 rounded-full"
