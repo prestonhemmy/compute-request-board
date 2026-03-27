@@ -18,7 +18,6 @@ class ComputeRequestsController < ApplicationController
     @total_requests = @compute_requests.size
     @gpu_count = @compute_requests.gpus_allocated
     @pending_cpu_hours = @compute_requests.pending_cpu_hours
-    # @status_counts = @compute_requests.status_counts
     @urgent_count = @compute_requests.urgent_count
 
     @grouped_requests = @compute_requests.group_by(&:status)
