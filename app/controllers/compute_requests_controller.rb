@@ -4,6 +4,16 @@ class ComputeRequestsController < ApplicationController
   # GET /compute_requests or /compute_requests.json
   def index
     @compute_requests = ComputeRequest.all
+
+    if params[:priority].present?
+      @compute_requests = @compute_requests.by_priority(params[:priority])
+    end
+
+    if params[:lab].present?
+      @compute_requests = @compute_requests.by_user_lab(params[:lab])
+    end
+
+    @grouped_requests = @compute_requests.group_by(&:status)
   end
 
   # GET /compute_requests/1 or /compute_requests/1.json
