@@ -1,0 +1,43 @@
+<div class="mb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+
+  <%# Total Requests Card %>
+  <div class="bg-white rounded-md p-4 shadow-sm border-l-4 border-gray-400">
+    <div class="text-lg font-bold">
+      <%= total_requests %>
+    </div>
+    <div class="text-sm text-gray-500">
+      Total Requests
+    </div>
+  </div>
+
+  <%# Currently Running GPUs Card %>
+  <div class="bg-white rounded-md p-4 shadow-sm border-l-4 border-sky-200">
+    <div class="text-lg font-bold">
+      <%= gpu_count %>
+    </div>
+    <div class="text-sm text-gray-500">
+      GPUs Running
+    </div>
+  </div>
+
+  <%# Pending CPU Hours Card %>
+  <div class="bg-white rounded-md p-4 shadow-sm border-l-4 border-blue-300">
+    <div class="text-lg font-bold">
+      <%= number_with_delimiter(pending_cpu_hours) %>
+    </div>
+    <div class="text-sm text-gray-500">
+      CPU·hrs Pending
+    </div>
+  </div>
+
+  <%# Total Urgent Requests Card %>
+  <div class="bg-white rounded-md p-4 shadow-sm border-l-4 border-red-600">
+    <div class="text-lg font-bold">
+      <%= urgent_count %>
+    </div>
+    <div class="text-sm text-gray-500">
+      Urgent Requests
+    </div>
+  </div>
+
+</div>

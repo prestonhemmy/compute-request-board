@@ -32,6 +32,17 @@ class ComputeRequest < ApplicationRecord
   scope :by_priority, ->(p) { where(priority: p) }
   scope :by_user_lab, ->(l) { joins(:user).where(users: { lab: l }) }
 
+  # Metrics
+
+  scope :gpus_allocated, -> { where(status: :running).sum(:gpu_count) }
+  scope :pending_cpu_hours, -> { where(status: [:submitted, :approved]).sum("cpu_cores * hours") }
+  # def self.status_counts
+  #   group(:status).count
+  # end
+  def self.urgent_count
+    where(priority: :urgent).count
+  end
+
   # Validations
 
   validates :title, presence: true
