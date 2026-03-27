@@ -11,62 +11,82 @@
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:title].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:title].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :title, class: "w-1/4 font-medium" %>
+    <%= form.text_field :title,
+                        class: field_classes(compute_request, :title) %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :gpu_count %>
-    <%= form.number_field :gpu_count, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:gpu_count].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:gpu_count].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :user_id, class: "w-1/4 font-medium" %>
+    <%= form.collection_select :user_id, User.all, :id, :name, {},
+                               class: field_classes(compute_request, :user_id) %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :cpu_count %>
-    <%= form.number_field :cpu_count, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:cpu_count].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:cpu_count].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :gpu_count, "GPU Count", class: "w-1/4 font-medium" %>
+    <%= form.number_field :gpu_count, min: 1, max: 8,
+                          class: field_classes(compute_request, :gpu_count) %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :memory_gb %>
-    <%= form.number_field :memory_gb, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:memory_gb].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:memory_gb].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :cpu_cores, "CPU Cores", class: "w-1/4 font-medium" %>
+    <%= form.number_field :cpu_cores, min: 1, max: 40,
+                          class: field_classes(compute_request, :cpu_cores) %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :hours %>
-    <%= form.number_field :hours, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:hours].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:hours].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :memory_gb, "Memory (GB)", class: "w-1/4 font-medium" %>
+    <%= form.number_field :memory_gb, min: 1, max: 512,
+                          class: field_classes(compute_request, :memory_gb) %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :partition %>
-    <%= form.text_field :partition, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:partition].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:partition].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :hours, class: "w-1/4 font-medium" %>
+    <%= form.number_field :hours, min: 1, max: 72,
+                          class: field_classes(compute_request, :hours) %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :priority %>
-    <%= form.text_field :priority, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:priority].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:priority].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :partition, class: "w-1/4 font-medium" %>
+    <%= form.select :partition, ComputeRequest.partitions.keys, {},
+                    class: field_classes(compute_request, :partition) %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :status %>
-    <%= form.text_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:status].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:status].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :priority, class: "w-1/4 font-medium" %>
+    <%= form.select :priority, ComputeRequest.priorities.keys, {},
+                    class: field_classes(compute_request, :priority) %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :notes %>
-    <%= form.textarea :notes, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:notes].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:notes].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :status, class: "w-1/4 font-medium" %>
+
+    <%# status field editable unless new request %>
+    <%= form.select :status, ComputeRequest.statuses.keys, {},
+                    class: field_classes(compute_request, :status),
+                    disabled: @compute_request.new_record? %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :created_at %>
-    <%= form.datetime_field :created_at, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:created_at].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:created_at].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :notes, class: "w-1/4 font-medium"  %>
+    <%= form.textarea :notes, rows: 4,
+                      class: field_classes(compute_request, :notes) %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :updated_at %>
-    <%= form.datetime_field :updated_at, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": compute_request.errors[:updated_at].none?, "border-red-400 focus:outline-red-600": compute_request.errors[:updated_at].any?}] %>
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :created_at, "Created At", class: "w-1/4 font-medium" %>
+    <%= form.datetime_field :created_at,
+                            class: field_classes(compute_request, :created_at) %>
+  </div>
+
+  <div class="my-5 flex items-center gap-4">
+    <%= form.label :updated_at, "Updated At", class: "w-1/4 font-medium" %>
+    <%= form.datetime_field :updated_at,
+                            class: field_classes(compute_request, :updated_at) %>
   </div>
 
   <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit class: "block w-full rounded-md px-3.5 py-2.5 bg-slate-600 hover:bg-slate-500 text-white font-medium cursor-pointer" %>
   </div>
 <% end %>

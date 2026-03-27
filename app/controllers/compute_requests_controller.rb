@@ -4,6 +4,23 @@ class ComputeRequestsController < ApplicationController
   # GET /compute_requests or /compute_requests.json
   def index
     @compute_requests = ComputeRequest.all
+
+    # filtering
+    if params[:priority].present?
+      @compute_requests = @compute_requests.by_priority(params[:priority])
+    end
+
+    if params[:lab].present?
+      @compute_requests = @compute_requests.by_user_lab(params[:lab])
+    end
+
+    # metrics
+    @total_requests = @compute_requests.size
+    @gpu_count = @compute_requests.gpus_allocated
+    @pending_cpu_hours = @compute_requests.pending_cpu_hours
+    @urgent_count = @compute_requests.urgent_count
+
+    @grouped_requests = @compute_requests.group_by(&:status)
   end
 
   # GET /compute_requests/1 or /compute_requests/1.json
@@ -65,6 +82,6 @@ class ComputeRequestsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def compute_request_params
-      params.expect(compute_request: [ :title, :gpu_count, :cpu_count, :memory_gb, :hours, :partition, :priority, :status, :notes, :created_at, :updated_at ])
+      params.expect(compute_request: [ :title, :user_id, :gpu_count, :cpu_cores, :memory_gb, :hours, :partition, :priority, :status, :notes, :created_at, :updated_at ])
     end
 end
